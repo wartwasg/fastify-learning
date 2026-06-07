@@ -1,9 +1,10 @@
 import dotenv from "dotenv";
 import InvalidApiKey from "../error/InvalidApiKey.js";
+import Unauthorized from "../error/Unauthorized.js";
 
 dotenv.config();
 
-const auth = async (request, reply) => {
+const apiKeyAuth = async (request, reply) => {
   //if (["GET"].includes(request.method)) {
   //   return;
   // }
@@ -16,4 +17,11 @@ const auth = async (request, reply) => {
   }
 };
 
-export default auth;
+const basicAuth = async (request, reply) => {
+  const authHeader = request.headers["authorization"];
+
+  if (!authHeader) {
+    throw new Unauthorized("Unauthorized");
+  }
+};
+export default { apiKeyAuth, basicAuth };

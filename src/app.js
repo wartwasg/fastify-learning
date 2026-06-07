@@ -5,6 +5,7 @@ import dotenv from "dotenv"; //loading enviroment variables from the .env file
 dotenv.config();
 //import my routes
 import mongoose from "mongoose";
+import auth from "./middlewares/auth.middleware.js";
 import projectRoutes from "./routes/project.route.js";
 import userRoutes from "./routes/user.route.js";
 
@@ -18,6 +19,7 @@ app.setErrorHandler((error, request, reply) => {
 });
 
 //app.addHook("preHandler", auth);
+app.addHook("preHandler", auth.basicAuth);
 
 //connect to the database
 
