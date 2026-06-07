@@ -27,6 +27,7 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    select: false,
   },
 });
 UserSchema.pre("save", async function (next) {

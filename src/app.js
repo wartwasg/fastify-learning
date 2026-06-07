@@ -4,8 +4,9 @@ import dotenv from "dotenv"; //loading enviroment variables from the .env file
 
 dotenv.config();
 //import my routes
+import fastifyJwt from "@fastify/jwt";
 import mongoose from "mongoose";
-import auth from "./middlewares/auth.middleware.js";
+import jwtPlugin from "./plugin/jwt.plugin.js";
 import projectRoutes from "./routes/project.route.js";
 import userRoutes from "./routes/user.route.js";
 
@@ -18,11 +19,12 @@ app.setErrorHandler((error, request, reply) => {
   });
 });
 
+app.register(jwtPlugin);
 //app.addHook("preHandler", auth);
-app.addHook("preHandler", auth.basicAuth);
+//app.addHook("preHandler", auth.basicAuth);
 
 //connect to the database
-
+app.register(fastifyJwt, { secret: process.env.JWT_SECRET_KEY });
 //start my server
 app.register(userRoutes, { prefix: "/api/v1/users" });
 
