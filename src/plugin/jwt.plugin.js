@@ -17,5 +17,13 @@ const jwtPlugin = async (fastify, options) => {
     }
     await request.jwtVerify();
   });
+  fastify.decorate("hasRole", function (role) {
+    return async function (request, reply) {
+      const userRole = request.user.payload.role;
+      if (role !== userRole) {
+        throw new Unauthorized("Forbidden. Does not have correct role");
+      }
+    };
+  });
 };
 export default fp(jwtPlugin);

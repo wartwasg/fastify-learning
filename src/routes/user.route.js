@@ -5,7 +5,11 @@ import user from "../models/user.model.js";
 async function routes(fastify, options) {
   fastify.get("/", { onRequest: fastify.jwtAuth }, userController.getAllUsers);
   fastify.get("/:id", userController.getUserById);
-  fastify.post("/", userController.createUser);
+  fastify.post(
+    "/",
+    { onRequest: [fastify.jwtAuth, fastify.hasRole("Admin")] },
+    userController.createUser,
+  );
   fastify.put("/:id", userController.updateUser);
   fastify.delete("/:id", userController.deleteUser);
   fastify.post("/login", async (request, reply) => {

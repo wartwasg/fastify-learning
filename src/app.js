@@ -4,6 +4,8 @@ import dotenv from "dotenv"; //loading enviroment variables from the .env file
 
 dotenv.config();
 //import my routes
+import fastifySwagger from "@fastify/swagger";
+import fastifySwaggerUi from "@fastify/swagger-ui";
 import mongoose from "mongoose";
 import jwtPlugin from "./plugin/jwt.plugin.js";
 import projectRoutes from "./routes/project.route.js";
@@ -17,6 +19,18 @@ app.setErrorHandler((error, request, reply) => {
     message: error.message,
   });
 });
+app.register(fastifySwagger, {
+  openapi: {
+    info: {
+      title: "Fastify API endpoints",
+      description:
+        "this is the fastify backend i generated for learning purpose",
+      version: "1.0.0",
+    },
+  },
+});
+
+app.register(fastifySwaggerUi, { routePrefix: "/documentation" });
 
 app.register(jwtPlugin);
 //app.addHook("preHandler", auth);
