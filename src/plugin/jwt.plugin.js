@@ -1,4 +1,5 @@
 import fastifyJwt from "@fastify/jwt";
+import fp from "fastify-plugin";
 import Unauthorized from "../error/Unauthorized.js";
 const jwtPlugin = async (fastify, options) => {
   fastify.register(fastifyJwt, { secret: process.env.JWT_SECRET_KEY });
@@ -17,4 +18,4 @@ const jwtPlugin = async (fastify, options) => {
     await request.jwtVerify();
   });
 };
-export default jwtPlugin;
+export default fp(jwtPlugin);
